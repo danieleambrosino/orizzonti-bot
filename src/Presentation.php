@@ -24,7 +24,7 @@ class Presentation
 		return $this;
 	}
 
-	public function setUsername(string $username): self
+	public function setUsername(?string $username): self
 	{
 		$this->username = $username;
 		return $this;
