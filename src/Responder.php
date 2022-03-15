@@ -17,6 +17,7 @@ class Responder
 	private function __construct(private DaoInterface $dao)
 	{
 		$this->request = json_decode(file_get_contents('php://input'));
+		if (!isset($this->request->message)) exit;
 		$this->presentation = $this->dao->find($this->request->message->from->id) ?? new Presentation($this->request->message->from->id);
 	}
 
