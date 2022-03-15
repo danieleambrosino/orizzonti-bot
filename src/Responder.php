@@ -3,16 +3,15 @@
 namespace Bot;
 
 use Bot\Dao\DaoInterface;
-use Bot\Dao\FileDao;
 
 class Responder
 {
 	private object $request;
 	private Presentation $presentation;
 
-	public static function create()
+	public static function create(DaoInterface $dao)
 	{
-		return new Responder(new FileDao());
+		return new Responder($dao);
 	}
 
 	private function __construct(private DaoInterface $dao)
