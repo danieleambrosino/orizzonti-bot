@@ -9,9 +9,9 @@ class Responder
 	private object $request;
 	private Presentation $presentation;
 
-	public static function create(DaoInterface $dao)
+	public static function create(DaoInterface $dao): self
 	{
-		return new Responder($dao);
+		return new self($dao);
 	}
 
 	private function __construct(private DaoInterface $dao)
@@ -28,23 +28,23 @@ class Responder
 			Status::PresentationRequested => $this->handlePresentationRequested(),
 			Status::InvitorRequested => $this->handleInvitorRequested()
 		};
-		if (!empty($text)) $this->send($text);
+		$this->dao->persist($this->presentation);
+		$this->send($text);
 	}
 
-	private function handleConversationStarted(): ?string
+	private function handleConversationStarted(): string
 	{
 		if (
 			empty($this->request->message->entities) ||
 			$this->request->message->entities[0]->type !== 'bot_command' ||
 			!str_starts_with($this->request->message->text, '/mipresento')
 		) {
-			return null;
+			exit;
 		}
 
 		$this->presentation
 			->setUsername($this->request->message->from->username ?? null)
 			->setStatus(Status::PresentationRequested);
-		$this->dao->persist($this->presentation);
 		return "Ciao {$this->request->message->from->first_name}, benvenuto! Scrivi qui la tua presentazione:";
 	}
 
@@ -53,7 +53,6 @@ class Responder
 		$this->presentation
 			->setPresentation($this->request->message->text)
 			->setStatus(Status::InvitorRequested);
-		$this->dao->persist($this->presentation);
 		return 'Da chi sei stato invitato?';
 	}
 
@@ -62,11 +61,10 @@ class Responder
 		$this->presentation
 			->setInvitor($this->request->message->text)
 			->setStatus(Status::ConversationStarted);
-		$this->dao->persist($this->presentation);
 		return 'Grazie!';
 	}
 
-	private function send(string $text)
+	private function send(string $text): void
 	{
 		header('Content-Type: application/json');
 		echo json_encode([
