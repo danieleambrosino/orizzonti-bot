@@ -21,7 +21,7 @@ class Responder
 		$this->presentation = $this->dao->find($this->request->message->from->id) ?? new Presentation($this->request->message->from->id);
 	}
 
-	public function handle()
+	public function handle(): void
 	{
 		$text = match ($this->presentation->getStatus()) {
 			Status::ConversationStarted => $this->handleConversationStarted(),
@@ -76,6 +76,7 @@ class Responder
 			'reply_markup' => [
 				'force_reply' => true
 			],
+			'reply_to_message_id' => $this->request->message->message_id,
 		]);
 	}
 }
