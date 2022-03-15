@@ -72,7 +72,10 @@ class Responder
 		echo json_encode([
 			'method' => 'sendMessage',
 			'chat_id' => $this->request->message->chat->id,
-			'text' => $text
+			'text' => $text,
+			'reply_markup' => [
+				'force_reply' => true
+			],
 		]);
 	}
 }
