@@ -1,0 +1,9 @@
+{
+    "name": "danieleambrosino/orizzonti-bot",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Bot\\": "src/"
+        }
+    }
+}
