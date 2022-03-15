@@ -3,6 +3,7 @@
 namespace Bot\Dao;
 
 use Bot\Presentation;
+use Exception;
 
 class FileDao implements DaoInterface
 {
@@ -11,7 +12,7 @@ class FileDao implements DaoInterface
 	public function __construct()
 	{
 		if (!file_exists(self::ROOT) && !mkdir(self::ROOT)) {
-			throw new \Exception('Cannot create persistence directory!');
+			throw new Exception('Cannot create persistence directory!');
 		}
 	}
 
@@ -25,7 +26,9 @@ class FileDao implements DaoInterface
 	public function persist(Presentation $presentation)
 	{
 		$filename = join(DIRECTORY_SEPARATOR, [self::ROOT, $presentation->getUserId()]);
-		if (!file_exists($filename)) touch($filename);
+		if (!file_exists($filename) && !touch($filename)) {
+			throw new Exception('Cannot create file for data persistence!');
+		}
 		file_put_contents($filename, serialize($presentation));
 	}
 }
