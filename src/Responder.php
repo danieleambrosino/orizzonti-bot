@@ -33,7 +33,7 @@ class Responder
 
 	private function handleConversationStarted(): ?string
 	{
-		if (empty($this->request->entities) || $this->request->entities[0]->type !== 'bot_command') {
+		if (empty($this->request->message->entities) || $this->request->message->entities[0]->type !== 'bot_command') {
 			return null;
 		}
 
