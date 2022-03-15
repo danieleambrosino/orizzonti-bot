@@ -41,7 +41,7 @@ class Responder
 			->setUsername($this->request->message->from->username ?? null)
 			->setStatus(Status::PresentationRequested);
 		$this->dao->persist($this->presentation);
-		return 'Presentazione:';
+		return "Ciao {$this->request->message->from->first_name}, benvenuto! Scrivi qui la tua presentazione:";
 	}
 
 	private function handlePresentationRequested(): string
@@ -50,7 +50,7 @@ class Responder
 			->setPresentation($this->request->message->text)
 			->setStatus(Status::InvitorRequested);
 		$this->dao->persist($this->presentation);
-		return 'Inviato da:';
+		return 'Da chi sei stato invitato?';
 	}
 
 	private function handleInvitorRequested(): string
@@ -59,7 +59,7 @@ class Responder
 			->setInvitor($this->request->message->text)
 			->setStatus(Status::ConversationStarted);
 		$this->dao->persist($this->presentation);
-		return 'Risposta salvata!';
+		return 'Grazie!';
 	}
 
 	private function send(string $text)
