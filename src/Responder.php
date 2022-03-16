@@ -40,9 +40,7 @@ final class Responder
 
 	private function handleConversationStarted(): array
 	{
-		if (!$this->startCommandSent()) {
-			exit;
-		}
+		if (!$this->startCommandSent()) exit;
 
 		$this->presentation
 			->setUsername($this->request->message->from->username ?? null)
@@ -59,6 +57,7 @@ final class Responder
 		$this->presentation
 			->setPresentation($this->request->message->text)
 			->setStatus(Status::InvitorRequested);
+
 		return [
 			'Da chi sei stato invitato?',
 			true,
@@ -70,6 +69,7 @@ final class Responder
 		$this->presentation
 			->setInvitor($this->request->message->text)
 			->setStatus(Status::ConversationEnded);
+
 		return [
 			'Grazie!',
 			false,
@@ -78,9 +78,7 @@ final class Responder
 
 	private function handleConversationEnded(): array
 	{
-		if (!$this->startCommandSent()) {
-			exit;
-		}
+		if (!$this->startCommandSent()) exit;
 
 		return [
 			'Ti sei già presentato!',
