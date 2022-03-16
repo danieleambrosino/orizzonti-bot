@@ -1,6 +1,6 @@
 <?php
 
 return [
-	'DAO' => \Bot\Dao\PdoDao::class,
-	'PDO_DSN' => 'sqlite:' . __DIR__ . '/data.db',
+	'DAO' => \Bot\Dao\FileDao::class,
+	// 'PDO_DSN' => 'sqlite:' . __DIR__ . '/data.db',
 ];

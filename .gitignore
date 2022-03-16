@@ -1,3 +1,5 @@
 /.vscode
 /var
 /vendor
+
+/env.secret.php
