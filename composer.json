@@ -4,7 +4,8 @@
 	"autoload": {
 		"psr-4": {
 			"Bot\\": "src/"
-		}
+		},
+		"files": ["bootstrap.php"]
 	},
 	"require": {
 		"php": "^8.1"

@@ -2,8 +2,9 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Bot\Dao\FileDao;
+use Bot\Dao\Factory;
 use Bot\Responder;
 
-$responder = Responder::create(new FileDao());
+$dao = Factory::create();
+$responder = Responder::create($dao);
 $responder->handle();
