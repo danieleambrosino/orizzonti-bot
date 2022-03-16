@@ -31,7 +31,7 @@ final class Responder
 		[$text, $forceReply] = match ($this->presentation->getStatus()) {
 			Status::ConversationStarted => $this->handleConversationStarted(),
 			Status::PresentationRequested => $this->handlePresentationRequested(),
-			Status::InvitorRequested => $this->handleInvitorRequested(),
+			Status::InviterRequested => $this->handleInviterRequested(),
 			Status::ConversationEnded => $this->handleConversationEnded(),
 		};
 		$this->dao->persist($this->presentation);
@@ -58,7 +58,7 @@ final class Responder
 	{
 		$this->presentation
 			->setPresentation($this->request->message->text)
-			->setStatus(Status::InvitorRequested);
+			->setStatus(Status::InviterRequested);
 
 		return [
 			'Da chi sei stato invitato?',
@@ -66,10 +66,10 @@ final class Responder
 		];
 	}
 
-	private function handleInvitorRequested(): array
+	private function handleInviterRequested(): array
 	{
 		$this->presentation
-			->setInvitor($this->request->message->text)
+			->setInviter($this->request->message->text)
 			->setStatus(Status::ConversationEnded);
 
 		return [

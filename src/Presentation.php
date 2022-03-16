@@ -11,7 +11,7 @@ class Presentation
 		private ?string $lastName = null,
 		private Status|int $status = Status::ConversationStarted,
 		private ?string $presentation = null,
-		private ?string $invitor = null,
+		private ?string $inviter = null,
 	) {
 		if (is_int($status)) {
 			$this->status = Status::from($status);
@@ -47,9 +47,9 @@ class Presentation
 		return $this;
 	}
 
-	public function setInvitor(string $invitor): self
+	public function setInviter(string $inviter): self
 	{
-		$this->invitor = $invitor;
+		$this->inviter = $inviter;
 		return $this;
 	}
 
@@ -73,7 +73,7 @@ class Presentation
 			'lastName' => $this->lastName,
 			'status' => $this->status->value,
 			'presentation' => $this->presentation,
-			'invitor' => $this->invitor,
+			'inviter' => $this->inviter,
 		];
 	}
 
@@ -85,6 +85,6 @@ class Presentation
 		$this->lastName = $data['lastName'];
 		$this->status = Status::from($data['status']);
 		$this->presentation = $data['presentation'];
-		$this->invitor = $data['invitor'];
+		$this->inviter = $data['inviter'];
 	}
 }
