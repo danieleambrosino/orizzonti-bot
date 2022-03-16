@@ -4,14 +4,19 @@ namespace Bot;
 
 use Bot\Dao\DaoInterface;
 
-class Responder
+final class Responder
 {
 	private object $request;
 	private Presentation $presentation;
 
+	private static ?self $instance = null;
+
 	public static function create(DaoInterface $dao): self
 	{
-		return new self($dao);
+		if (!self::$instance) {
+			self::$instance = new self($dao);
+		}
+		return self::$instance;
 	}
 
 	private function __construct(private DaoInterface $dao)
