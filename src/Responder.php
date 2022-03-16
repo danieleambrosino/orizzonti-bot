@@ -28,59 +28,88 @@ final class Responder
 
 	public function handle(): void
 	{
-		$text = match ($this->presentation->getStatus()) {
+		[$text, $forceReply] = match ($this->presentation->getStatus()) {
 			Status::ConversationStarted => $this->handleConversationStarted(),
 			Status::PresentationRequested => $this->handlePresentationRequested(),
-			Status::InvitorRequested => $this->handleInvitorRequested()
+			Status::InvitorRequested => $this->handleInvitorRequested(),
+			Status::ConversationEnded => $this->handleConversationEnded(),
 		};
 		$this->dao->persist($this->presentation);
-		$this->send($text);
+		$this->send($text, $forceReply);
 	}
 
-	private function handleConversationStarted(): string
+	private function handleConversationStarted(): array
 	{
-		if (
-			empty($this->request->message->entities) ||
-			$this->request->message->entities[0]->type !== 'bot_command' ||
-			!str_starts_with($this->request->message->text, '/mipresento')
-		) {
+		if (!$this->startCommandSent()) {
 			exit;
 		}
 
 		$this->presentation
 			->setUsername($this->request->message->from->username ?? null)
 			->setStatus(Status::PresentationRequested);
-		return "Ciao {$this->request->message->from->first_name}, benvenuto! Scrivi qui la tua presentazione:";
+
+		return [
+			"Ciao {$this->request->message->from->first_name}, benvenuto! Scrivi qui la tua presentazione:",
+			true,
+		];
 	}
 
-	private function handlePresentationRequested(): string
+	private function handlePresentationRequested(): array
 	{
 		$this->presentation
 			->setPresentation($this->request->message->text)
 			->setStatus(Status::InvitorRequested);
-		return 'Da chi sei stato invitato?';
+		return [
+			'Da chi sei stato invitato?',
+			true,
+		];
 	}
 
-	private function handleInvitorRequested(): string
+	private function handleInvitorRequested(): array
 	{
 		$this->presentation
 			->setInvitor($this->request->message->text)
-			->setStatus(Status::ConversationStarted);
-		return 'Grazie!';
+			->setStatus(Status::ConversationEnded);
+		return [
+			'Grazie!',
+			false,
+		];
 	}
 
-	private function send(string $text): void
+	private function handleConversationEnded(): array
+	{
+		if (!$this->startCommandSent()) {
+			exit;
+		}
+
+		return [
+			'Ti sei già presentato!',
+			false,
+		];
+	}
+
+	private function startCommandSent(): bool
+	{
+		return !empty($this->request->message->entities) &&
+			$this->request->message->entities[0]->type === 'bot_command' &&
+			str_starts_with($this->request->message->text, '/mipresento');
+	}
+
+	private function send(string $text, bool $forceReply): void
 	{
 		header('Content-Type: application/json');
-		echo json_encode([
+		$response = [
 			'method' => 'sendMessage',
 			'chat_id' => $this->request->message->chat->id,
 			'text' => $text,
-			'reply_markup' => [
+			'reply_to_message_id' => $this->request->message->message_id,
+		];
+		if ($forceReply) {
+			$response['reply_markup'] = [
 				'force_reply' => true,
 				'selective' => true,
-			],
-			'reply_to_message_id' => $this->request->message->message_id,
-		]);
+			];
+		}
+		echo json_encode($response);
 	}
 }
