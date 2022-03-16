@@ -3,7 +3,6 @@
 namespace Bot\Dao;
 
 use Bot\Presentation;
-use Bot\Status;
 use PDO;
 
 class PdoDao implements DaoInterface
