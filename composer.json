@@ -1,14 +1,14 @@
 {
-    "name": "danieleambrosino/orizzonti-bot",
-    "type": "project",
-    "autoload": {
-        "psr-4": {
-            "Bot\\": "src/"
-        }
-    },
-    "require": {
-        "php": "^8.1"
-    },
+	"name": "danieleambrosino/orizzonti-bot",
+	"type": "project",
+	"autoload": {
+		"psr-4": {
+			"Bot\\": "src/"
+		}
+	},
+	"require": {
+		"php": "^8.1"
+	},
 	"config": {
 		"classmap-authoritative": true
 	}
