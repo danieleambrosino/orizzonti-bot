@@ -18,12 +18,6 @@ class Presentation
 		return $this->userId;
 	}
 
-	public function setUserId(int $userId): self
-	{
-		$this->userId = $userId;
-		return $this;
-	}
-
 	public function setUsername(?string $username): self
 	{
 		$this->username = $username;
