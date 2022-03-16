@@ -5,7 +5,7 @@
 		"psr-4": {
 			"Bot\\": "src/"
 		},
-		"files": ["config/bootstrap.php"]
+		"files": ["bootstrap.php"]
 	},
 	"require": {
 		"php": "^8.1"
