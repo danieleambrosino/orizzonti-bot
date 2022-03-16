@@ -9,10 +9,13 @@ class Presentation
 		private ?string $username = null,
 		private ?string $firstName = null,
 		private ?string $lastName = null,
-		private Status $status = Status::ConversationStarted,
+		private Status|int $status = Status::ConversationStarted,
 		private ?string $presentation = null,
 		private ?string $invitor = null,
 	) {
+		if (is_int($status)) {
+			$this->status = Status::from($status);
+		}
 	}
 
 	public function getUserId(): int

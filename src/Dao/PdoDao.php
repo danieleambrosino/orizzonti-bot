@@ -17,23 +17,15 @@ class PdoDao implements DaoInterface
 
 	public function find(int $id): ?Presentation
 	{
-		$stmt = $this->connection->prepare('SELECT * FROM presentations WHERE user_id = ?');
+		$stmt = $this->connection->prepare('SELECT * FROM Presentation WHERE userId = ?');
 		$stmt->execute([$id]);
 		$data = $stmt->fetch(PDO::FETCH_ASSOC);
-		return new Presentation(
-			$data['user_id'],
-			$data['username'],
-			$data['first_name'],
-			$data['last_name'],
-			Status::from($data['status']),
-			$data['presentation'],
-			$data['invitor'],
-		);
+		return $data ? new Presentation(...$data) : null;
 	}
 
 	public function persist(Presentation $presentation)
 	{
-		$stmt = $this->connection->prepare('REPLACE INTO presentations VALUES (?, ?, ?, ?, ?, ?, ?)');
+		$stmt = $this->connection->prepare('REPLACE INTO Presentation VALUES (?, ?, ?, ?, ?, ?, ?)');
 		$stmt->execute(array_values($presentation->__serialize()));
 	}
 }
