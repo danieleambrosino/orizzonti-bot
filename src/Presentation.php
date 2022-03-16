@@ -7,6 +7,8 @@ class Presentation
 	public function __construct(
 		private int $userId,
 		private ?string $username = null,
+		private ?string $firstName = null,
+		private ?string $lastName = null,
 		private Status $status = Status::ConversationStarted,
 		private ?string $presentation = null,
 		private ?string $invitor = null,
@@ -23,13 +25,25 @@ class Presentation
 		$this->username = $username;
 		return $this;
 	}
-	
+
+	public function setFirstName(?string $firstName): self
+	{
+		$this->firstName = $firstName;
+		return $this;
+	}
+
+	public function setLastName(?string $lastName): self
+	{
+		$this->lastName = $lastName;
+		return $this;
+	}
+
 	public function setPresentation(string $presentation): self
 	{
 		$this->presentation = $presentation;
 		return $this;
 	}
-	
+
 	public function setInvitor(string $invitor): self
 	{
 		$this->invitor = $invitor;

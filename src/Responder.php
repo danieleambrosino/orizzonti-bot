@@ -44,6 +44,8 @@ final class Responder
 
 		$this->presentation
 			->setUsername($this->request->message->from->username ?? null)
+			->setFirstName($this->request->message->from->first_name)
+			->setLastName($this->request->message->from->last_name ?? null)
 			->setStatus(Status::PresentationRequested);
 
 		return [
