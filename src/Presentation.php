@@ -66,6 +66,8 @@ class Presentation
 		return [
 			'userId' => $this->userId,
 			'username' => $this->username,
+			'firstName' => $this->firstName,
+			'lastName' => $this->lastName,
 			'status' => $this->status->value,
 			'presentation' => $this->presentation,
 			'invitor' => $this->invitor,
@@ -76,6 +78,8 @@ class Presentation
 	{
 		$this->userId = $data['userId'];
 		$this->username = $data['username'];
+		$this->firstName = $data['firstName'];
+		$this->lastName = $data['lastName'];
 		$this->status = Status::from($data['status']);
 		$this->presentation = $data['presentation'];
 		$this->invitor = $data['invitor'];
