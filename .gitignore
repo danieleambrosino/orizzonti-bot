@@ -1,8 +1,0 @@
-/.vscode
-/build
-/var
-/vendor
-
-/env.secret.php
-/.phpunit.cache
-/.php-cs-fixer.cache

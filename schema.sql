@@ -1,9 +1,9 @@
-CREATE TABLE Presentation (
+CREATE TABLE presentations (
 	userId INTEGER PRIMARY KEY,
-	username VARCHAR(32),
-	firstName VARCHAR(64),
-	lastName VARCHAR(64),
-	status TINYINT NOT NULL,
-	presentation VARCHAR(4096),
-	inviter VARCHAR(4096)
+	username TEXT,
+	firstName TEXT,
+	lastName TEXT,
+	status INTEGER NOT NULL DEFAULT 0,
+	presentation TEXT,
+	inviter TEXT
 );
