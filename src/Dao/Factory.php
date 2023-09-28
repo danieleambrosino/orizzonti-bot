@@ -1,22 +1,22 @@
 <?php
 
-namespace Bot\Dao;
+declare(strict_types=1);
 
-use InvalidArgumentException;
+namespace Bot\Dao;
 
 final class Factory
 {
-	private static ?DaoInterface $dao = null;
-
-	public static function create()
+	/**
+	 * @template T
+	 *
+	 * @param class-string<T> $daoClassName
+	 */
+	public static function create(string $daoClassName): DaoInterface
 	{
-		if (!self::$dao) {
-			self::$dao = match ($_SERVER['DAO']) {
-				FileDao::class => new FileDao(),
-				PdoDao::class => new PdoDao($_SERVER['PDO_DSN']),
-				default => throw new InvalidArgumentException('Unsupported Dao!')
-			};
-		}
-		return self::$dao;
+		return match ($daoClassName) {
+			FileDao::class => new FileDao(),
+			PdoDao::class => new PdoDao(new \PDO($_SERVER['PDO_DSN'])),
+			default => throw new \InvalidArgumentException('Unsupported Dao!')
+		};
 	}
 }
