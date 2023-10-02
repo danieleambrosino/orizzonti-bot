@@ -6,6 +6,7 @@ namespace Tests\Unit\Dao;
 
 use Bot\Dao\PdoDao;
 use Bot\Presentation;
+use Bot\Status;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -17,27 +18,64 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Presentation::class)]
 class PdoDaoTest extends TestCase
 {
+	private static \PDO $pdo;
 	private static PdoDao $dao;
+	private static int $userId;
 
 	public static function setUpBeforeClass(): void
 	{
-		$pdo = new \PDO('sqlite::memory:');
-		$pdo->exec('CREATE TABLE Presentation (userId INTEGER PRIMARY KEY, username TEXT, firstName TEXT, lastName TEXT, status INTEGER NOT NULL DEFAULT 0, presentation TEXT, inviter TEXT)');
-		$pdo->exec('INSERT INTO Presentation (userId) VALUES (1)');
-		self::$dao = new PdoDao($pdo);
+		self::$userId = rand();
+		self::$pdo = new \PDO('sqlite::memory:');
+		self::$pdo->exec('CREATE TABLE Presentation (userId INTEGER PRIMARY KEY, username TEXT, firstName TEXT, lastName TEXT, status INTEGER NOT NULL DEFAULT 0, presentation TEXT, inviter TEXT)');
+		self::$dao = new PdoDao(self::$pdo);
 	}
 
-	public function testPdoDao(): void
+	protected function tearDown(): void
 	{
-		$this->assertNull(self::$dao->find(0)); // non-existing entry
+		self::$pdo->exec('DELETE FROM Presentation');
+	}
 
-		$presentation = self::$dao->find(1);
-		$this->assertInstanceOf(Presentation::class, $presentation); // existing entry
+	public function testNonExistingPresentation(): void
+	{
+		// Given an empty table
 
-		$presentation->setFirstName('Pippo');
-		self::$dao->persist($presentation); // updated entry
-		$presentation = self::$dao->find(1);
-		$this->assertNotNull($presentation);
-		$this->assertSame($presentation->firstName, $presentation->firstName);
+		// When
+		$presentation = self::$dao->find(self::$userId);
+
+		// Then
+		$this->assertNull($presentation);
+	}
+
+	public function testFetchesPresentationCorrectly(): void
+	{
+		// Given
+		self::$pdo->exec('INSERT INTO Presentation (userId) VALUES ('.(string) self::$userId.')');
+
+		// When
+		$presentation = self::$dao->find(self::$userId);
+
+		// Then
+		$this->assertInstanceOf(Presentation::class, $presentation);
+	}
+
+	public function testPersistsPresentationCorrectly(): void
+	{
+		// Given
+		$presentation = new Presentation(
+			userId: self::$userId,
+			username: 'pippobaudo',
+			firstName: 'Pippo',
+			lastName: 'Baudo',
+			status: Status::ConversationEnded,
+			presentation: 'presentation',
+			inviter: 'inviter',
+		);
+		self::$dao->persist($presentation);
+
+		// When
+		$fetchedPresentation = self::$dao->find(self::$userId);
+
+		// Then
+		$this->assertEquals($presentation, $fetchedPresentation);
 	}
 }
