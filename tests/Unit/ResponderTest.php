@@ -28,14 +28,18 @@ use PHPUnit\Framework\TestCase;
 #[UsesFunction('Bot\isStartCommand')]
 class ResponderTest extends TestCase
 {
-	private DaoInterface $dao;
-	private Responder $responder;
+	private static DaoInterface $dao;
+	private static Responder $responder;
 
-	public function __construct(string $name)
+	public static function setUpBeforeClass(): void
 	{
-		parent::__construct($name);
-		$this->dao = new ArrayDao();
-		$this->responder = new Responder($this->dao);
+		self::$dao = new ArrayDao();
+		self::$responder = new Responder(self::$dao);
+	}
+
+	public function testIsInstantiatedCorrectly(): void
+	{
+		$this->assertInstanceOf(Responder::class, new Responder(new ArrayDao()));
 	}
 
 	public function testConversationStarted(): void
@@ -58,14 +62,14 @@ class ResponderTest extends TestCase
 		]));
 
 		// When
-		$response = $this->responder->respond($request);
+		$response = self::$responder->respond($request);
 
 		// Then
 		$this->assertIsString($response->text);
 		$this->assertSame('Ciao Pippo, benvenuto! Scrivi qui la tua presentazione:', $response->text);
 		$this->assertTrue($response->forceReply);
 
-		$presentation = $this->dao->find(1);
+		$presentation = self::$dao->find(1);
 		$this->assertNotNull($presentation);
 		$this->assertInstanceOf(Presentation::class, $presentation);
 

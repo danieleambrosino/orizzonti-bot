@@ -27,7 +27,7 @@ class FileDao implements DaoInterface
 		if (false === $content) {
 			return null;
 		}
-		$presentation = unserialize($content);
+		$presentation = @unserialize($content);
 		if (false === $presentation instanceof Presentation) {
 			return null;
 		}

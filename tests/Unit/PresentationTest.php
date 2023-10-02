@@ -51,12 +51,9 @@ class PresentationTest extends TestCase
 
 	public function testPassingInvalidNumberAsStatus(): void
 	{
-		try {
-			new Presentation(1, status: -1);
-		} catch (\ValueError $e) {
-			$this->assertInstanceOf(\ValueError::class, $e);
-			$this->assertStringContainsString('is not a valid backing value', $e->getMessage());
-		}
+		$this->expectException(\ValueError::class);
+		$this->expectExceptionMessageMatches('/is not a valid backing value/');
+		new Presentation(1, status: -1);
 	}
 
 	public function testSerialize(): void

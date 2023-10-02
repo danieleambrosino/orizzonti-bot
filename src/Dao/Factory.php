@@ -14,6 +14,7 @@ final class Factory
 	public static function create(string $daoClassName): DaoInterface
 	{
 		return match ($daoClassName) {
+			ArrayDao::class => new ArrayDao(),
 			FileDao::class => new FileDao(),
 			PdoDao::class => new PdoDao(new \PDO($_SERVER['PDO_DSN'])),
 			default => throw new \InvalidArgumentException('Unsupported Dao!')
