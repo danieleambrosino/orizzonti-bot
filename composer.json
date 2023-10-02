@@ -1,5 +1,7 @@
 {
 	"name": "danieleambrosino/orizzonti-bot",
+	"description": "Simple Telegram bot to handle user presentations.",
+	"license": "MIT",
 	"type": "project",
 	"autoload": {
 		"psr-4": {
