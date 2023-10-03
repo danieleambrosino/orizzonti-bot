@@ -6,6 +6,8 @@ namespace Bot;
 
 /**
  * @param non-empty-string $input
+ *
+ * @throws \InvalidArgumentException
  */
 function decodeInput(string $input): object
 {
