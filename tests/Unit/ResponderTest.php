@@ -6,8 +6,11 @@ namespace Tests\Unit;
 
 use Bot\Dao\ArrayDao;
 use Bot\Dao\DaoInterface;
+use Bot\Handlers\ConversationEndedHandler;
 use Bot\Handlers\ConversationStartedHandler;
 use Bot\Handlers\Factory;
+use Bot\Handlers\InviterRequestedHandler;
+use Bot\Handlers\PresentationRequestedHandler;
 use Bot\Presentation;
 use Bot\Responder;
 use Bot\Response;
@@ -21,9 +24,12 @@ use PHPUnit\Framework\TestCase;
  */
 #[CoversClass(Responder::class)]
 #[UsesClass(ArrayDao::class)]
+#[UsesClass(ConversationEndedHandler::class)]
 #[UsesClass(ConversationStartedHandler::class)]
 #[UsesClass(Factory::class)]
+#[UsesClass(InviterRequestedHandler::class)]
 #[UsesClass(Presentation::class)]
+#[UsesClass(PresentationRequestedHandler::class)]
 #[UsesClass(Response::class)]
 #[UsesFunction('Bot\isStartCommand')]
 class ResponderTest extends TestCase
@@ -42,7 +48,7 @@ class ResponderTest extends TestCase
 		$this->assertInstanceOf(Responder::class, new Responder(new ArrayDao()));
 	}
 
-	public function testConversationStarted(): void
+	public function testInteraction(): void
 	{
 		// Given
 		$request = json_decode(json_encode([
@@ -50,7 +56,9 @@ class ResponderTest extends TestCase
 				'message_id' => 1,
 				'from' => [
 					'id' => 1,
+					'username' => 'pippobaudo',
 					'first_name' => 'Pippo',
+					'last_name' => 'Baudo',
 				],
 				'text' => '/mipresento',
 				'entities' => [
@@ -65,14 +73,96 @@ class ResponderTest extends TestCase
 		$response = self::$responder->respond($request);
 
 		// Then
-		$this->assertIsString($response->text);
 		$this->assertSame('Ciao Pippo, benvenuto! Scrivi qui la tua presentazione:', $response->text);
 		$this->assertTrue($response->forceReply);
 
 		$presentation = self::$dao->find(1);
-		$this->assertNotNull($presentation);
 		$this->assertInstanceOf(Presentation::class, $presentation);
 
+		$this->assertSame('pippobaudo', $presentation->username);
 		$this->assertSame('Pippo', $presentation->firstName);
+		$this->assertSame('Baudo', $presentation->lastName);
+
+		// Given
+		$request = json_decode(json_encode([
+			'message' => [
+				'from' => [
+					'id' => 1,
+				],
+				'text' => 'presentation',
+			],
+		]));
+
+		// When
+		$response = self::$responder->respond($request);
+
+		// Then
+		$this->assertSame('Da chi sei stato invitato?', $response->text);
+		$this->assertTrue($response->forceReply);
+
+		$presentation = self::$dao->find(1);
+		$this->assertInstanceOf(Presentation::class, $presentation);
+		$this->assertSame('presentation', $presentation->presentation);
+
+		// Given
+		$request = json_decode(json_encode([
+			'message' => [
+				'from' => [
+					'id' => 1,
+				],
+				'text' => 'inviter',
+			],
+		]));
+
+		// When
+		$response = self::$responder->respond($request);
+
+		// Then
+		$this->assertSame('Grazie!', $response->text);
+		$this->assertFalse($response->forceReply);
+
+		$presentation = self::$dao->find(1);
+		$this->assertInstanceOf(Presentation::class, $presentation);
+		$this->assertSame('inviter', $presentation->inviter);
+
+		// Given
+		$request = json_decode(json_encode([
+			'message' => [
+				'message_id' => 1,
+				'from' => [
+					'id' => 1,
+				],
+				'text' => '/mipresento',
+				'entities' => [
+					[
+						'type' => 'bot_command',
+					],
+				],
+			],
+		]));
+
+		// When
+		$response = self::$responder->respond($request);
+
+		// Then
+		$this->assertSame('Ti sei già presentato!', $response->text);
+		$this->assertFalse($response->forceReply);
+
+		// Given
+		$request = json_decode(json_encode([
+			'message' => [
+				'message_id' => 1,
+				'from' => [
+					'id' => 1,
+				],
+				'text' => 'test',
+			],
+		]));
+
+		// When
+		$response = self::$responder->respond($request);
+
+		// Then
+		$this->assertNull($response);
 	}
 }
