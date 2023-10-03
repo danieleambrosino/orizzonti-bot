@@ -10,6 +10,8 @@ final class Factory
 	 * @template T
 	 *
 	 * @param class-string<T> $daoClassName
+	 *
+	 * @throws \InvalidArgumentException
 	 */
 	public static function create(string $daoClassName): DaoInterface
 	{

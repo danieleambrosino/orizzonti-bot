@@ -56,6 +56,7 @@ class PdoDaoTest extends TestCase
 
 		// Then
 		$this->assertInstanceOf(Presentation::class, $presentation);
+		$this->assertSame(self::$userId, $presentation->userId);
 	}
 
 	public function testPersistsPresentationCorrectly(): void
@@ -70,12 +71,12 @@ class PdoDaoTest extends TestCase
 			presentation: 'presentation',
 			inviter: 'inviter',
 		);
-		self::$dao->persist($presentation);
 
 		// When
-		$fetchedPresentation = self::$dao->find(self::$userId);
+		self::$dao->persist($presentation);
 
 		// Then
+		$fetchedPresentation = self::$dao->find(self::$userId);
 		$this->assertEquals($presentation, $fetchedPresentation);
 	}
 }
