@@ -15,7 +15,13 @@ if (empty($input)) {
 	exit;
 }
 
-$request = decodeInput($input);
+try {
+	$request = decodeInput($input);
+} catch (\InvalidArgumentException $e) {
+	http_response_code(400);
+	echo $e->getMessage();
+	exit;
+}
 $dao = Factory::create($_SERVER['DAO']);
 $responder = new Responder($dao);
 $response = $responder->respond($request);
