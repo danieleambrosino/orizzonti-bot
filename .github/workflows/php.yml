@@ -41,7 +41,7 @@ jobs:
       run: composer run-script tests
     
     - name: Run static analysis
-      run: composer run phpstan
+      run: composer run-script phpstan
 
     - name: Check coding standards
       run: composer run-script check-cs
