@@ -6,6 +6,7 @@ namespace Tests\Unit\Handlers;
 
 use Bot\Handlers\PresentationRequestedHandler;
 use Bot\Presentation;
+use Bot\Request;
 use Bot\Response;
 use Bot\Status;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -24,11 +25,7 @@ class PresentationRequestedHandlerTest extends TestCase
 	{
 		// Given
 		$handler = new PresentationRequestedHandler();
-		$request = json_decode(json_encode([
-			'message' => [
-				'text' => 'test',
-			],
-		]));
+		$request = new Request(text: 'test');
 		$presentation = new Presentation(1);
 
 		// When

@@ -12,6 +12,7 @@ use Bot\Handlers\Factory;
 use Bot\Handlers\InviterRequestedHandler;
 use Bot\Handlers\PresentationRequestedHandler;
 use Bot\Presentation;
+use Bot\Request;
 use Bot\Responder;
 use Bot\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -51,25 +52,18 @@ class ResponderTest extends TestCase
 	public function testInteraction(): void
 	{
 		// Given
-		$request = json_decode(json_encode([
-			'message' => [
-				'message_id' => 1,
-				'from' => [
-					'id' => 1,
-					'username' => 'pippobaudo',
-					'first_name' => 'Pippo',
-					'last_name' => 'Baudo',
-				],
-				'text' => '/mipresento',
-				'entities' => [
-					[
-						'type' => 'bot_command',
-					],
-				],
-			],
-		]));
+		$request = new Request(
+			messageId: 1,
+			userId: 1,
+			username: 'pippobaudo',
+			firstName: 'Pippo',
+			lastName: 'Baudo',
+			text: '/mipresento',
+			entities: [(object) ['type' => 'bot_command']],
+		);
 
 		// When
+		/** @var Response */
 		$response = self::$responder->respond($request);
 
 		// Then
@@ -84,16 +78,13 @@ class ResponderTest extends TestCase
 		$this->assertSame('Baudo', $presentation->lastName);
 
 		// Given
-		$request = json_decode(json_encode([
-			'message' => [
-				'from' => [
-					'id' => 1,
-				],
-				'text' => 'presentation',
-			],
-		]));
+		$request = new Request(
+			userId: 1,
+			text: 'presentation',
+		);
 
 		// When
+		/** @var Response */
 		$response = self::$responder->respond($request);
 
 		// Then
@@ -105,16 +96,13 @@ class ResponderTest extends TestCase
 		$this->assertSame('presentation', $presentation->presentation);
 
 		// Given
-		$request = json_decode(json_encode([
-			'message' => [
-				'from' => [
-					'id' => 1,
-				],
-				'text' => 'inviter',
-			],
-		]));
+		$request = new Request(
+			userId: 1,
+			text: 'inviter',
+		);
 
 		// When
+		/** @var Response */
 		$response = self::$responder->respond($request);
 
 		// Then
@@ -126,22 +114,14 @@ class ResponderTest extends TestCase
 		$this->assertSame('inviter', $presentation->inviter);
 
 		// Given
-		$request = json_decode(json_encode([
-			'message' => [
-				'message_id' => 1,
-				'from' => [
-					'id' => 1,
-				],
-				'text' => '/mipresento',
-				'entities' => [
-					[
-						'type' => 'bot_command',
-					],
-				],
-			],
-		]));
+		$request = new Request(
+			userId: 1,
+			text: '/mipresento',
+			entities: [(object) ['type' => 'bot_command']],
+		);
 
 		// When
+		/** @var Response */
 		$response = self::$responder->respond($request);
 
 		// Then
@@ -149,17 +129,13 @@ class ResponderTest extends TestCase
 		$this->assertFalse($response->forceReply);
 
 		// Given
-		$request = json_decode(json_encode([
-			'message' => [
-				'message_id' => 1,
-				'from' => [
-					'id' => 1,
-				],
-				'text' => 'test',
-			],
-		]));
+		$request = new Request(
+			userId: 1,
+			text: 'test',
+		);
 
 		// When
+		/** @var null */
 		$response = self::$responder->respond($request);
 
 		// Then

@@ -6,6 +6,7 @@ namespace Tests\Unit\Handlers;
 
 use Bot\Handlers\ConversationStartedHandler;
 use Bot\Presentation;
+use Bot\Request;
 use Bot\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -25,16 +26,7 @@ class ConversationStartedHandlerTest extends TestCase
 	{
 		// Given
 		$handler = new ConversationStartedHandler();
-		$request = json_decode(json_encode([
-			'message' => [
-				'message_id' => 1,
-				'from' => [
-					'id' => 1,
-					'first_name' => 'Pippo',
-				],
-				'text' => 'not_start_command',
-			],
-		]));
+		$request = new Request();
 		$presentation = new Presentation(1);
 
 		// When
@@ -48,21 +40,11 @@ class ConversationStartedHandlerTest extends TestCase
 	{
 		// Given
 		$handler = new ConversationStartedHandler();
-		$request = json_decode(json_encode([
-			'message' => [
-				'message_id' => 1,
-				'from' => [
-					'id' => 1,
-					'first_name' => 'Pippo',
-				],
-				'text' => '/mipresento',
-				'entities' => [
-					[
-						'type' => 'bot_command',
-					],
-				],
-			],
-		]));
+		$request = new Request(
+			firstName: 'Pippo',
+			text: '/mipresento',
+			entities: [(object) ['type' => 'bot_command']],
+		);
 		$presentation = new Presentation(1);
 
 		// When

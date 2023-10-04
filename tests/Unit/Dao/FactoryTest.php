@@ -43,6 +43,6 @@ class FactoryTest extends TestCase
 	public function testInvalidDao(): void
 	{
 		$this->expectException(\InvalidArgumentException::class);
-		Factory::create('asdf');
+		Factory::create(\stdClass::class);
 	}
 }

@@ -13,9 +13,9 @@ final class Responder
 		private DaoInterface $dao
 	) {}
 
-	public function respond(object $request): ?Response
+	public function respond(Request $request): ?Response
 	{
-		$presentation = $this->findPresentation($request->message->from->id);
+		$presentation = $this->findPresentation($request->userId);
 		$handler = Factory::create($presentation->status);
 		$response = $handler->handle($request, $presentation);
 		$this->dao->persist($presentation);

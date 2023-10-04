@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Bot\Handlers;
 
 use Bot\Presentation;
+use Bot\Request;
 use Bot\Response;
-
-use function Bot\isStartCommand;
 
 class ConversationEndedHandler implements HandlerInterface
 {
-	public function handle(object $request, Presentation $presentation): ?Response
+	public function handle(Request $request, Presentation $presentation): ?Response
 	{
-		if (!isStartCommand($request)) {
+		if (false === $request->isStartCommand()) {
 			return null;
 		}
 

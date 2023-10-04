@@ -13,5 +13,3 @@ foreach (array_merge($env, $secretEnv) as $key => $value) {
 		$_SERVER[$key] = $value;
 	}
 }
-
-require __DIR__.'/src/functions.php';

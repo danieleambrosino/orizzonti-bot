@@ -24,6 +24,7 @@ class RequestTest extends TestCase
 
 	public function testCreateWithInvalidSchema(): void
 	{
+		/** @var non-empty-string */
 		$input = json_encode([
 			'message' => [
 				'hello' => 'hi',
@@ -36,10 +37,13 @@ class RequestTest extends TestCase
 
 	public function testCreateCorrectly(): void
 	{
+		/** @var non-empty-string */
 		$input = json_encode([
 			'message' => [
+				'message_id' => 1,
 				'from' => [
 					'id' => 1,
+					'username' => 'pippobaudo',
 					'first_name' => 'Pippo',
 					'last_name' => 'Baudo',
 				],
@@ -71,22 +75,9 @@ class RequestTest extends TestCase
 
 	public function testIsStartCommand(): void
 	{
-		$this->assertTrue(Request::fromJsonString(json_encode([
-			'message' => [
-				'from' => [
-					'id' => 1,
-					'first_name' => 'Pippo',
-				],
-				'chat' => [
-					'id' => 1,
-				],
-				'entities' => [
-					[
-						'type' => 'bot_command',
-					],
-				],
-				'text' => '/mipresento',
-			],
-		]))->isStartCommand());
+		$this->assertTrue((new Request(
+			text: '/mipresento',
+			entities: [(object) ['type' => 'bot_command']],
+		))->isStartCommand());
 	}
 }

@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace Bot\Handlers;
 
 use Bot\Presentation;
+use Bot\Request;
 use Bot\Response;
 use Bot\Status;
 
 class InviterRequestedHandler implements HandlerInterface
 {
-	public function handle(object $request, Presentation $presentation): ?Response
+	public function handle(Request $request, Presentation $presentation): ?Response
 	{
 		$presentation
-			->setInviter($request->message->text)
+			->setInviter($request->text)
 			->setStatus(Status::ConversationEnded)
 		;
 

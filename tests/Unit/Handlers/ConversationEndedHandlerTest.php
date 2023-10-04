@@ -6,6 +6,7 @@ namespace Tests\Unit\Handlers;
 
 use Bot\Handlers\ConversationEndedHandler;
 use Bot\Presentation;
+use Bot\Request;
 use Bot\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -25,11 +26,7 @@ class ConversationEndedHandlerTest extends TestCase
 	{
 		// Given
 		$handler = new ConversationEndedHandler();
-		$request = json_decode(json_encode([
-			'message' => [
-				'text' => 'test',
-			],
-		]));
+		$request = new Request(text: 'test');
 		$presentation = new Presentation(1);
 
 		// When
@@ -43,17 +40,10 @@ class ConversationEndedHandlerTest extends TestCase
 	{
 		// Given
 		$handler = new ConversationEndedHandler();
-		$request = json_decode(json_encode([
-			'message' => [
-				'message_id' => 1,
-				'text' => '/mipresento',
-				'entities' => [
-					[
-						'type' => 'bot_command',
-					],
-				],
-			],
-		]));
+		$request = new Request(
+			text: '/mipresento',
+			entities: [(object) ['type' => 'bot_command']],
+		);
 		$presentation = new Presentation(1);
 
 		// When

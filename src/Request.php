@@ -7,17 +7,20 @@ namespace Bot;
 readonly class Request
 {
 	public function __construct(
+		public int $messageId = 0,
 		public int $userId = 0,
-		public ?int $username = null,
+		public ?string $username = null,
 		public string $firstName = '',
 		public ?string $lastName = null,
 		public int $chatId = 0,
 		public string $text = '',
-		/** @var array<string,stdClass> */
+		/** @var object{type: string}[] */
 		public ?array $entities = null,
 	) {}
 
 	/**
+	 * @param non-empty-string $input
+	 *
 	 * @throws \JsonException
 	 * @throws \InvalidArgumentException
 	 */
@@ -31,13 +34,14 @@ readonly class Request
 
 		try {
 			return new self(
-				$request->message?->from?->id ?? null,
-				$request->message?->from?->username ?? null,
-				$request->message?->from?->first_name ?? null,
-				$request->message?->from?->last_name ?? null,
-				$request->message?->chat?->id ?? null,
-				$request->message?->text ?? null,
-				$request->message?->entities ?? null,
+				messageId: $request->message?->message_id ?? null,
+				userId: $request->message?->from?->id ?? null,
+				username: $request->message?->from?->username ?? null,
+				firstName: $request->message?->from?->first_name ?? null,
+				lastName: $request->message?->from?->last_name ?? null,
+				chatId: $request->message?->chat?->id ?? null,
+				text: $request->message?->text ?? null,
+				entities: $request->message?->entities ?? null,
 			);
 		} catch (\TypeError) {
 			throw new \InvalidArgumentException('Invalid schema');

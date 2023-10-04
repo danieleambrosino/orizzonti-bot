@@ -5,10 +5,8 @@ declare(strict_types=1);
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Bot\Dao\Factory;
+use Bot\Request;
 use Bot\Responder;
-
-use function Bot\decodeInput;
-use function Bot\getTelegramResponse;
 
 $input = file_get_contents('php://input');
 if (empty($input)) {
@@ -16,7 +14,7 @@ if (empty($input)) {
 }
 
 try {
-	$request = decodeInput($input);
+	$request = Request::fromJsonString($input);
 } catch (\InvalidArgumentException $e) {
 	http_response_code(400);
 	echo $e->getMessage();
@@ -29,11 +27,9 @@ $response = $responder->respond($request);
 if (null === $response) {
 	exit;
 }
-$response = getTelegramResponse(
-	$response,
-	$request->message->chat->id,
-	$request->message->message_id,
-);
 
 header('Content-Type: application/json');
-echo json_encode($response);
+echo json_encode($response->toTelegramResponse(
+	$request->chatId,
+	$request->messageId,
+));

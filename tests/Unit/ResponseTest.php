@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Response::class)]
 class ResponseTest extends TestCase
 {
-	public function testResponse(): void
+	public function testCreation(): void
 	{
 		$response = new Response('test', true);
 		$this->assertSame('test', $response->text);
@@ -23,5 +23,33 @@ class ResponseTest extends TestCase
 		$response = new Response('test', false);
 		$this->assertSame('test', $response->text);
 		$this->assertFalse($response->forceReply);
+	}
+
+	public function testToTelegramResponseNoForceReply(): void
+	{
+		$response = new Response('test text', false);
+		$chatId = $messageId = 1;
+		$this->assertSame([
+			'method' => 'sendMessage',
+			'chat_id' => $chatId,
+			'text' => $response->text,
+			'reply_to_message_id' => $messageId,
+		], $response->toTelegramResponse($chatId, $messageId));
+	}
+
+	public function testToTelegramResponseForceReply(): void
+	{
+		$response = new Response('test text', true);
+		$chatId = $messageId = 1;
+		$this->assertSame([
+			'method' => 'sendMessage',
+			'chat_id' => $chatId,
+			'text' => $response->text,
+			'reply_to_message_id' => $messageId,
+			'reply_markup' => [
+				'force_reply' => true,
+				'selective' => true,
+			],
+		], $response->toTelegramResponse($chatId, $messageId));
 	}
 }
