@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
  */
 #[CoversClass(InviterRequestedHandler::class)]
 #[UsesClass(Presentation::class)]
+#[UsesClass(Request::class)]
 #[UsesClass(Response::class)]
 class InviterRequestedHandlerTest extends TestCase
 {

@@ -10,7 +10,6 @@ use Bot\Request;
 use Bot\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,8 +17,8 @@ use PHPUnit\Framework\TestCase;
  */
 #[CoversClass(ConversationEndedHandler::class)]
 #[UsesClass(Presentation::class)]
+#[UsesClass(Request::class)]
 #[UsesClass(Response::class)]
-#[UsesFunction('Bot\isStartCommand')]
 class ConversationEndedHandlerTest extends TestCase
 {
 	public function testConversationEndedHandlerNoStartCommand(): void

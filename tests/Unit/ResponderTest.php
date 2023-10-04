@@ -17,7 +17,6 @@ use Bot\Responder;
 use Bot\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
-use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -31,8 +30,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(InviterRequestedHandler::class)]
 #[UsesClass(Presentation::class)]
 #[UsesClass(PresentationRequestedHandler::class)]
+#[UsesClass(Request::class)]
 #[UsesClass(Response::class)]
-#[UsesFunction('Bot\isStartCommand')]
 class ResponderTest extends TestCase
 {
 	private static DaoInterface $dao;
