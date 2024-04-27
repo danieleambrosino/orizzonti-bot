@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Tests\Unit\Entities;
 
-use Bot\Presentation;
-use Bot\Status;
+use Bot\Entities\Presentation;
+use Bot\Enums\Status;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

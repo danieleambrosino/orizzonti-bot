@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bot\Dao;
 
-use Bot\Presentation;
+use Bot\Entities\Presentation;
 
 class FileDao implements DaoInterface
 {

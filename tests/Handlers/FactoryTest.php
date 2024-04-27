@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Handlers;
 
+use Bot\Enums\Status;
 use Bot\Handlers\ConversationEndedHandler;
 use Bot\Handlers\ConversationStartedHandler;
 use Bot\Handlers\Factory;
 use Bot\Handlers\InviterRequestedHandler;
 use Bot\Handlers\PresentationRequestedHandler;
-use Bot\Status;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

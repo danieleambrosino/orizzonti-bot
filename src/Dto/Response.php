@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bot;
+namespace Bot\Dto;
 
 readonly class Response
 {

@@ -5,8 +5,8 @@ declare(strict_types=1);
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Bot\Dao\Factory;
-use Bot\Request;
-use Bot\Responder;
+use Bot\Dto\Request;
+use Bot\Services\Responder;
 
 $input = file_get_contents('php://input');
 if (empty($input)) {

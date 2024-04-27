@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Bot;
+namespace Bot\Entities;
+
+use Bot\Enums\Status;
 
 class Presentation
 {

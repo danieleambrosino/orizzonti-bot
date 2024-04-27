@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Bot;
+namespace Bot\Services;
 
 use Bot\Dao\DaoInterface;
+use Bot\Dto\Request;
+use Bot\Dto\Response;
+use Bot\Entities\Presentation;
 use Bot\Handlers\Factory;
 
 final class Responder

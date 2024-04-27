@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bot;
+namespace Bot\Enums;
 
 enum Status: int
 {

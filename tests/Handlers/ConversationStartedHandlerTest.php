@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Handlers;
 
-use Bot\Handlers\ConversationEndedHandler;
-use Bot\Presentation;
-use Bot\Request;
-use Bot\Response;
+use Bot\Dto\Request;
+use Bot\Dto\Response;
+use Bot\Entities\Presentation;
+use Bot\Handlers\ConversationStartedHandler;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
@@ -15,17 +15,17 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-#[CoversClass(ConversationEndedHandler::class)]
+#[CoversClass(ConversationStartedHandler::class)]
 #[UsesClass(Presentation::class)]
 #[UsesClass(Request::class)]
 #[UsesClass(Response::class)]
-class ConversationEndedHandlerTest extends TestCase
+class ConversationStartedHandlerTest extends TestCase
 {
-	public function testConversationEndedHandlerNoStartCommand(): void
+	public function testConversationStartedHandlerNotStartCommand(): void
 	{
 		// Given
-		$handler = new ConversationEndedHandler();
-		$request = new Request(text: 'test');
+		$handler = new ConversationStartedHandler();
+		$request = new Request();
 		$presentation = new Presentation(1);
 
 		// When
@@ -35,11 +35,12 @@ class ConversationEndedHandlerTest extends TestCase
 		$this->assertNull($response);
 	}
 
-	public function testConversationEndedHandlerWithStartCommand(): void
+	public function testConversationStartedHandlerWithStartCommand(): void
 	{
 		// Given
-		$handler = new ConversationEndedHandler();
+		$handler = new ConversationStartedHandler();
 		$request = new Request(
+			firstName: 'Pippo',
 			text: '/mipresento',
 			entities: [(object) ['type' => 'bot_command']],
 		);
@@ -50,7 +51,8 @@ class ConversationEndedHandlerTest extends TestCase
 
 		// Then
 		$this->assertNotNull($response);
-		$this->assertSame('Ti sei già presentato!', $response->text);
-		$this->assertFalse($response->forceReply);
+		$this->assertInstanceOf(Response::class, $response);
+		$this->assertSame('Ciao Pippo, benvenuto! Scrivi qui la tua presentazione:', $response->text);
+		$this->assertTrue($response->forceReply);
 	}
 }

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Tests\Unit\Services;
 
 use Bot\Dao\ArrayDao;
 use Bot\Dao\DaoInterface;
+use Bot\Dto\Request;
+use Bot\Dto\Response;
+use Bot\Entities\Presentation;
 use Bot\Handlers\ConversationEndedHandler;
 use Bot\Handlers\ConversationStartedHandler;
 use Bot\Handlers\Factory;
 use Bot\Handlers\InviterRequestedHandler;
 use Bot\Handlers\PresentationRequestedHandler;
-use Bot\Presentation;
-use Bot\Request;
-use Bot\Responder;
-use Bot\Response;
+use Bot\Services\Responder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;

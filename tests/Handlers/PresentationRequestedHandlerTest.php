@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Handlers;
 
+use Bot\Dto\Request;
+use Bot\Dto\Response;
+use Bot\Entities\Presentation;
+use Bot\Enums\Status;
 use Bot\Handlers\PresentationRequestedHandler;
-use Bot\Presentation;
-use Bot\Request;
-use Bot\Response;
-use Bot\Status;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;

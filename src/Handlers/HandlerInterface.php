@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Bot\Handlers;
 
-use Bot\Presentation;
-use Bot\Request;
-use Bot\Response;
+use Bot\Dto\Request;
+use Bot\Dto\Response;
+use Bot\Entities\Presentation;
 
 interface HandlerInterface
 {

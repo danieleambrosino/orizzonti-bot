@@ -8,7 +8,7 @@ use Bot\Dao\ArrayDao;
 use Bot\Dao\Factory;
 use Bot\Dao\FileDao;
 use Bot\Dao\PdoDao;
-use Bot\Presentation;
+use Bot\Entities\Presentation;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;

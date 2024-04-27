@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Bot\Handlers;
 
-use Bot\Status;
+use Bot\Enums\Status;
 
 class Factory
 {
