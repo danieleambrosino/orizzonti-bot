@@ -13,7 +13,7 @@ class Presentation
 		public ?string $username = null,
 		public ?string $firstName = null,
 		public ?string $lastName = null,
-		Status|int $status = Status::ConversationStarted,
+		int|Status $status = Status::ConversationStarted,
 		public ?string $presentation = null,
 		public ?string $inviter = null,
 	) {
