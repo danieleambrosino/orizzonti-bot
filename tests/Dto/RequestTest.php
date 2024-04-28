@@ -19,7 +19,7 @@ class RequestTest extends TestCase
 		$input = '{'; // invalid JSON string
 		$this->expectException(\JsonException::class);
 
-		Request::fromJsonString($input);
+		Request::fromJson($input);
 	}
 
 	public function testCreateWithInvalidSchema(): void
@@ -32,7 +32,7 @@ class RequestTest extends TestCase
 		]);
 		$this->expectException(\InvalidArgumentException::class);
 
-		Request::fromJsonString($input);
+		Request::fromJson($input);
 	}
 
 	public function testCreateCorrectly(): void
@@ -54,7 +54,7 @@ class RequestTest extends TestCase
 			],
 		]);
 
-		$request = Request::fromJsonString($input);
+		$request = Request::fromJson($input);
 		$this->assertInstanceOf(Request::class, $request);
 	}
 

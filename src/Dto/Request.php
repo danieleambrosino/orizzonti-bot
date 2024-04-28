@@ -24,7 +24,7 @@ readonly class Request
 	 * @throws \JsonException
 	 * @throws \InvalidArgumentException
 	 */
-	public static function fromJsonString(string $input): self
+	public static function fromJson(string $input): self
 	{
 		/** @var object */
 		$request = json_decode(

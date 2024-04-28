@@ -14,8 +14,8 @@ if (empty($input)) {
 }
 
 try {
-	$request = Request::fromJsonString($input);
-} catch (InvalidArgumentException $e) {
+	$request = Request::fromJson($input);
+} catch (InvalidArgumentException|JsonException $e) {
 	http_response_code(400);
 	echo $e->getMessage();
 
