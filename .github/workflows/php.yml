@@ -44,4 +44,4 @@ jobs:
       run: composer run-script phpstan
 
     - name: Check coding standards
-      run: composer run-script check-cs
+      run: composer run-script cs:check
